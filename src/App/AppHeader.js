@@ -9,6 +9,7 @@ import { buttonBackgroundColor, buttonTextColor } from '../Shared/Styles'
 
 const Logo = styled.div`
     font-size: 1.5em;
+    text-align: left;
 `;
 
 const Bar = styled.div`

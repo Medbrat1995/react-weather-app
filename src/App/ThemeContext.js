@@ -16,6 +16,8 @@ export const MyThemeProvider = ({children}) => {
         padding: 40px;
         background-color: ${backgroundColor};
         color: ${textColor};
+        text-align: center;
+        margin-top: 20px;
     `;
 
     const toggle = () => {
