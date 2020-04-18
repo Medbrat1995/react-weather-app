@@ -2,12 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App/index';
 import { MyThemeProvider } from './App/ThemeContext';
+import { AppProvider } from './App/AppProvider';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <MyThemeProvider>
-        <App />
-    </MyThemeProvider>,
+    <AppProvider>
+        <MyThemeProvider>
+            <App />
+        </MyThemeProvider>
+    </AppProvider>,
     document.getElementById('root')
 );
 
