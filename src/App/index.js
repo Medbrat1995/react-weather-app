@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 //import AppLayout from './AppLayout';
 import AppHeader from './AppHeader';
 //import {AppProvider} from './AppProvider';
+import AppContent from './AppContent';
 
 
 
-/*const AppLayout = styled.div`
-    background-color: ${backgroundColor};
-    color: ${textColor};
-`;*/
+
 
 
 class App extends Component {
@@ -17,6 +15,7 @@ class App extends Component {
             <>
                 <AppHeader />
                 <div>Hello, World!</div>
+                <AppContent />
             </>);
     }
 }
