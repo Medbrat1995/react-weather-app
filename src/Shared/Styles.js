@@ -2,17 +2,17 @@
 import theme from 'styled-theming';
 
 export const backgroundColor = theme('mode', {
-    light: '#ff3030',
+    light: '#ff5050',
     dark: '#333'
 })
 
 export const textColor = theme('mode', {
     light: 'black',
-    dark: '#ff3030'
+    dark: '#ff5050'
 })
 
 export const buttonBackgroundColor = theme('mode', {
-    light: '#ff1010',
+    light: '#ff3030',
     dark: '#555'
 })
 
