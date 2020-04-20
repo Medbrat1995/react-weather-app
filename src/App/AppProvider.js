@@ -139,8 +139,7 @@ export class AppProvider extends React.Component{
     }
 
     deleteCity(id){
-        //let cities = this.state.cities;
-        let filteredCities = this.state.cities.filter((el) => el.id != id);
+        let filteredCities = this.state.cities.filter((el) => el.id !== id);
         this.setState({cities: filteredCities}, console.log('City deleted ' + id))
     }
 
