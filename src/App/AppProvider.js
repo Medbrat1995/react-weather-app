@@ -1,153 +1,130 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
 
+const API_KEY = `b8b4cec7e0ef27313f5c3aa7808c6c73`;
+
 export const AppContext = React.createContext();
 
 export class AppProvider extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            cities: [
-                {"coord": { "lon": 139,"lat": 35},
-                    "weather": [
-                        {
-                            "id": 800,
-                            "main": "Clear",
-                            "description": "clear sky",
-                            "icon": "01n"
-                        }
-                    ],
-                    "base": "stations",
-                    "main": {
-                        "temp": 281.52,
-                        "feels_like": 278.99,
-                        "temp_min": 280.15,
-                        "temp_max": 283.71,
-                        "pressure": 1016,
-                        "humidity": 93
-                    },
-                    "wind": {
-                        "speed": 0.47,
-                        "deg": 107.538
-                    },
-                    "clouds": {
-                        "all": 2
-                    },
-                    "dt": 1560350192,
-                    "sys": {
-                        "type": 3,
-                        "id": 2019346,
-                        "message": 0.0065,
-                        "country": "JP",
-                        "sunrise": 1560281377,
-                        "sunset": 1560333478
-                    },
-                    "timezone": 32400,
-                    "id": 1851632,
-                    "name": "Shuzenji",
-                    "cod": 200
-                },
-                {"coord": { "lon": 139,"lat": 35},
-                    "weather": [
-                        {
-                            "id": 800,
-                            "main": "Clear",
-                            "description": "clear sky",
-                            "icon": "01n"
-                        }
-                    ],
-                    "base": "stations",
-                    "main": {
-                        "temp": 281.52,
-                        "feels_like": 278.99,
-                        "temp_min": 280.15,
-                        "temp_max": 283.71,
-                        "pressure": 1016,
-                        "humidity": 93
-                    },
-                    "wind": {
-                        "speed": 0.47,
-                        "deg": 107.538
-                    },
-                    "clouds": {
-                        "all": 2
-                    },
-                    "dt": 1560350192,
-                    "sys": {
-                        "type": 3,
-                        "id": 2019346,
-                        "message": 0.0065,
-                        "country": "RU",
-                        "sunrise": 1560281377,
-                        "sunset": 1560333478
-                    },
-                    "timezone": 32400,
-                    "id": 1851633,
-                    "name": "Moscow",
-                    "cod": 200
-                },
-                {"coord": { "lon": 139,"lat": 35},
-                    "weather": [
-                        {
-                            "id": 800,
-                            "main": "Clear",
-                            "description": "clear sky",
-                            "icon": "01n"
-                        }
-                    ],
-                    "base": "stations",
-                    "main": {
-                        "temp": 281.52,
-                        "feels_like": 278.99,
-                        "temp_min": 280.15,
-                        "temp_max": 283.71,
-                        "pressure": 1016,
-                        "humidity": 93
-                    },
-                    "wind": {
-                        "speed": 0.47,
-                        "deg": 107.538
-                    },
-                    "clouds": {
-                        "all": 2
-                    },
-                    "dt": 1560350192,
-                    "sys": {
-                        "type": 3,
-                        "id": 2019346,
-                        "message": 0.0065,
-                        "country": "UK",
-                        "sunrise": 1560281377,
-                        "sunset": 1560333478
-                    },
-                    "timezone": 32400,
-                    "id": 1851634,
-                    "name": "London",
-                    "cod": 200
-                }
-            ],
+            cities: [],
+            IDs: [],
+            pickedCityParams: {
+                lat: 60.99,
+                lon: 30.9,
+                name: 'Moscow'
+            },
+            pickedCity: {},
             addCity: this.addCity.bind(this),
             deleteCity: this.deleteCity.bind(this),
-            isInCities: this.isInCities.bind(this)
+            isInCities: this.isInCities.bind(this),
+            handleSubmit: this.handleSubmit.bind(this),
+            setPickedCity: this.setPickedCity.bind(this),
+            fetchPickedCity: this.fetchPickedCity.bind(this),
+            addPickedCity: this.addPickedCity.bind(this),
+            fetchCity: this.fetchCity.bind(this),
+            fetchIDsGroup: this.fetchIDsGroup.bind(this),
         };
     }
 
     addCity(city){
         let cities = this.state.cities;
+        let IDs = this.state.IDs;
         cities.push(city);
-        this.setState({cities});
+        IDs.push(city.id);
+        this.setState({cities, IDs}, () => this.setInLocalStorage());
+    }
+
+    setPickedCity({lat, lon, updatedAt, name}){
+        console.log(`setPickedCity called lat:${lat}, lon:${lon}, name:${name}, updatedAt:${updatedAt}`);
+        let pickedCityParams = {lat, lon, name};
+        this.setState({pickedCityParams});
+        this.fetchPickedCity({lat, lon});
+    }
+
+    addPickedCity(pickedCity){
+        this.setState({pickedCity}, console.log(`addPickedCity called`));
+    }
+
+    async fetchPickedCity({lat, lon}){
+        await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&APPID=${API_KEY}`)
+            .then((response) => response.json())
+            .then((json) => this.addPickedCity(json))
+            .catch((err) => console.log(err))
     }
 
     deleteCity(id){
-        let filteredCities = this.state.cities.filter((el) => el.id !== id);
-        this.setState({cities: filteredCities}, console.log('City deleted ' + id))
+        let cities = this.state.cities.filter((el) => el.id !== id);
+        let IDs = cities.map(el => el.id);
+        this.setState({cities, IDs}, () => this.setInLocalStorage());
     }
 
-    isInCities = id => _.includes(this.state.cities, id)
+    getFromLocalStorage(){
+        let localStorageObject = localStorage.getItem('weatherApp');
+        let {cities, IDs} = localStorageObject ? JSON.parse(localStorageObject) : {cities: [], IDs: []};
+        this.setState({cities, IDs}, console.log('getFromLocalStorage setState called'));
+    }
+
+    setInLocalStorage(){
+        let cities = this.state.cities;
+        let IDs = this.state.IDs;
+        localStorage.setItem('weatherApp', JSON.stringify({cities, IDs}));
+    }
 
 
-    componentDidMount(){
+    fetchIDsGroup = async (IDs) => {
+        if (IDs) {
+            let queryString = `http://api.openweathermap.org/data/2.5/group?id=`;
+            let cities = [];
+            IDs.forEach(function(item){
+                queryString += `${item},`
+            });
+            queryString.slice(0, -1);
+            queryString += `&units=metric&APPID=${API_KEY}`;
+            console.log(queryString);
+            await fetch(queryString)
+                .then((response) => response.json())
+                .then((json) => {
+                    json.list.forEach(function(item){
+                        cities.push(item)
+                    })
+                })
+                .then(() => {
+                    this.setState({cities, IDs}, () => this.setInLocalStorage())
+                })
+                .catch(err => console.log(err))
+        }
+    };
 
+
+
+
+    fetchCity = async ({name, id}) => {
+
+        let queryString = `http://api.openweathermap.org/data/2.5/weather?`;
+        if (name && !id) {queryString += `q=${name}`;}
+        if (id && !name) {queryString += `id=${id}`;}
+        queryString += `&units=metric&APPID=${API_KEY}`;
+        console.log(queryString);
+        await fetch(queryString)
+            .then((response) => response.json())
+            .then((json) => this.addCity(json))
+            .catch(err => console.log(err))
+    };
+
+    handleSubmit({name, id}){
+        this.fetchCity({name, id});
+    }
+
+    isInCities = id => _.includes(this.state.cities, id);
+
+
+    async componentDidMount(){
+        await this.getFromLocalStorage();
+        await this.fetchIDsGroup(this.state.IDs);
+        console.log(this.state.IDs);
     }
 
     render(){

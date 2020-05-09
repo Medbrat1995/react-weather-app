@@ -18,29 +18,34 @@ const SubmitButton = styled.button`
     cursor: pointer;
 `;
 
+const InputComponentStyled = styled.div`
+    margin-top: 10px;
+`;
+
 export default class InputComponent extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {
-
-        };
+        this.state = {};
     }
 
     handleChange(event){
         event.preventDefault();
-        this.setState({[event.target.name]: event.target.value},
-            console.log(JSON.stringify(this.state)));
+        this.setState({[event.target.name]: event.target.value});
     }
 
     render(){
         return(
-            <div>
-                This is an InputComponent
-                <InputField type='text' name='idInput' onChange={(e) => this.handleChange(e)} />
-                <InputField type='text' name='nameInput' onChange={(e) => this.handleChange(e)} />
-                <SubmitButton> Submit </SubmitButton>
-            </div>
+            <AppContext.Consumer>
+            {({handleSubmit}) => (
+                <InputComponentStyled>
+                <InputField type='text' name='id' placeholder='id' onChange={(e) => this.handleChange(e)} />
+                <InputField type='text' name='name' placeholder='city' onChange={(e) => this.handleChange(e)} />
+                <SubmitButton onClick={() => handleSubmit(this.state)}> Submit </SubmitButton>
+                </InputComponentStyled>
+        )}
+
+            </AppContext.Consumer>
         )
     }
 }

@@ -8,9 +8,7 @@ const CityGridStyled = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 25px;
-    margin: 25px;
-    
-    
+    margin: 25px;    
 `;
 
 
@@ -20,9 +18,9 @@ export default function(){
         <AppContext.Consumer>
             {({cities}) =>
                 <CityGridStyled>
-                    {cities.map(city => (
+                    {cities ? cities.map(city => (
                         <CityGridItem city={city} key={city.id} />
-                    ))}
+                    )) : <div></div>}
                 </CityGridStyled>
                 }
 
