@@ -21,6 +21,33 @@ export const buttonTextColor = theme('mode', {
     dark: '#ff9999'
 })
 
+let chartStylingLight = {
+    chart: {
+        backgroundColor: '#ff5050'
+    },
+    colorAxis: {
+        gridLineColor: '#333'
+    },
+    colors: ['#333']
+};
+
+let chartStylingDark = {
+    chart: {
+        backgroundColor: '#333'
+    },
+    colorAxis: {
+        gridLineColor: '#ff5050'
+    },
+    colors: ['#ff5050']
+}
+
+export const chartStyling = theme('mode', {
+    light: chartStylingLight,
+    dark: chartStylingDark
+})
+
+
+
 /*export const GlobalStyles = createGlobalStyle`
     body, #root{
         background: ${({theme}) => theme.background};

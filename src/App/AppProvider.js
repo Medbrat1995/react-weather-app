@@ -16,6 +16,8 @@ export class AppProvider extends React.Component{
                 lon: 30.9,
                 name: 'Moscow'
             },
+            highchartData: 'daily',
+            toggleHighchartData: this.toggleHighchartData.bind(this),
             pickedCity: {},
             addCity: this.addCity.bind(this),
             deleteCity: this.deleteCity.bind(this),
@@ -42,6 +44,11 @@ export class AppProvider extends React.Component{
         let pickedCityParams = {lat, lon, name};
         this.setState({pickedCityParams});
         this.fetchPickedCity({lat, lon});
+    }
+
+    toggleHighchartData(){
+        const data = this.state.highchartData === 'daily' ? 'hourly' : 'daily';
+        this.setState({highchartData: data}, () => {console.log('Toggle button clicked')});
     }
 
     addPickedCity(pickedCity){

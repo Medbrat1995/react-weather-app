@@ -10,7 +10,7 @@ const InputField = styled.input`
     margin-top: 15px;
 `;
 
-const SubmitButton = styled.button`
+export const SubmitButton = styled.button`
     color: ${textColor};
     background-color: ${backgroundColor};
     border: 1px solid ${textColor};
@@ -39,9 +39,9 @@ export default class InputComponent extends React.Component{
             <AppContext.Consumer>
             {({handleSubmit}) => (
                 <InputComponentStyled>
-                <InputField type='text' name='id' placeholder='id' onChange={(e) => this.handleChange(e)} />
-                <InputField type='text' name='name' placeholder='city' onChange={(e) => this.handleChange(e)} />
-                <SubmitButton onClick={() => handleSubmit(this.state)}> Submit </SubmitButton>
+                    <InputField type='text' name='id' placeholder='id' onChange={(e) => this.handleChange(e)} />
+                    <InputField type='text' name='name' placeholder='city' onChange={(e) => this.handleChange(e)} />
+                    <p><SubmitButton onClick={() => handleSubmit(this.state)}> Submit </SubmitButton></p>
                 </InputComponentStyled>
         )}
 

@@ -21,9 +21,9 @@ class PickedCity extends React.Component{
 
     render() {
         return (<AppContext.Consumer>
-            {({pickedCityParams, pickedCity}) => (<PickedCityStyled>
-                <CurrentInfoComponent name={pickedCityParams.name} current={pickedCity.current} />
-                <HighChartComponent daily={pickedCity.daily} hourly={pickedCity.hourly} />
+            {({pickedCityParams, pickedCity, highchartData, toggleHighchartData}) => (<PickedCityStyled>
+                <CurrentInfoComponent name={pickedCityParams.name} current={pickedCity.current} toggleData={() => toggleHighchartData()} />
+                <HighChartComponent daily={pickedCity.daily} hourly={pickedCity.hourly} highchartData={highchartData}/>
             </PickedCityStyled>)}
         </AppContext.Consumer>)
     }
