@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import {backgroundColor, textColor, chartStyling} from '../Shared/Styles';
+import {backgroundColor, textColor, chartStyling, chartStylingLight} from '../Shared/Styles';
+
 
 const HighChartStyled = styled.div`
     
@@ -18,9 +19,10 @@ function HighChartComponent({hourly, daily, highchartData}){
     let daily_dt = [];
     let daily_min_temp = [];
     let daily_max_temp = [];
+    let highchartsLineColor = textColor;
 
     if(hourly){
-        hourly_dt = hourly.map(item => new Date(item.dt * 1000).toLocaleString().slice(0, -3));
+        hourly_dt = hourly.map(item => new Date(item.dt * 1000).toLocaleString().slice(12, -3));
         hourly_temp = hourly.map(item => item.temp);
     }
 
@@ -30,36 +32,66 @@ function HighChartComponent({hourly, daily, highchartData}){
         daily_max_temp = daily.map(item => item.temp.max);
     }
 
-
-
-    console.log(`hourly data is ${hourly_dt}`);
-    console.log(`daily data is ${JSON.stringify(dailyData)}`);
     let chartOptions = {
         chart: {
-            backgroundColor: '#ff5050'
+            backgroundColor: backgroundColor,
         },
-        colorAxis: {
-            gridLineColor: '#333'
-        },
-        colors: ['#333'],
+
+        colors: ['white'],
         title: {
+            style: {
+                color: 'white',
+                font: '20px "Times New Roman"'
+            },
             text: `${highchartData} data`
         },
         xAxis: {
-            categories: highchartData === 'daily' ? daily_dt : hourly_dt
+            categories: highchartData === 'daily' ? daily_dt : hourly_dt,
+            labels: {
+                style: {
+                    color: 'white',
+                    font: '18px "Times New Roman"'
+                }
+            }
+        },
+        yAxis: {
+            gridLineWidth: 1,
+            gridLineColor: `white`,
+            labels: {
+                style: {
+                    color: 'white',
+                    font: '18px "Times New Roman"'
+                },
+            },
+            title:{
+                text: 'Temperature',
+                style: {
+                    color: 'white',
+
+                },
+            }
+        },
+        legend: {
+            itemStyle: {
+                color: 'white',
+                font: '18px "Times New Roman"'
+            }
         },
 
         series: highchartData === 'daily' ? [{
+            name: 'Max',
             data: daily_max_temp
         },
-            {data: daily_min_temp}
+            {name: 'Min',
+                data: daily_min_temp}
         ] : [{
+            name: 'Current',
             data: hourly_temp
         }],
-        /*series: {
-            data: highchartData === 'daily' ? daily_max_temp : hourly_temp
-        }*/
+
     };
+
+
 
     return(<HighChartStyled>
         <HighchartsReact highcharts={Highcharts} options={chartOptions} />

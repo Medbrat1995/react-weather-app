@@ -2,13 +2,13 @@
 import theme from 'styled-theming';
 
 export const backgroundColor = theme('mode', {
-    light: '#ff5050',
+    light: '#FF5E13',
     dark: '#333'
 })
 
 export const textColor = theme('mode', {
     light: 'black',
-    dark: '#ff5050'
+    dark: '#FF5E13'
 })
 
 export const buttonBackgroundColor = theme('mode', {
@@ -21,30 +21,34 @@ export const buttonTextColor = theme('mode', {
     dark: '#ff9999'
 })
 
-let chartStylingLight = {
-    chart: {
-        backgroundColor: '#ff5050'
+export const chartStylingLight = {
+
+    yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: `black`
     },
-    colorAxis: {
-        gridLineColor: '#333'
-    },
-    colors: ['#333']
+    colors: ['black']
 };
 
 let chartStylingDark = {
-    chart: {
-        backgroundColor: '#333'
+
+    yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: `#FF5E13`
     },
-    colorAxis: {
-        gridLineColor: '#ff5050'
-    },
-    colors: ['#ff5050']
+    colors: ['#FF5E13']
 }
 
 export const chartStyling = theme('mode', {
     light: chartStylingLight,
     dark: chartStylingDark
-})
+});
+
+/*export const chartStyling = theme('mode', {
+    light: chartStylingLight.toString(),
+    dark: chartStylingDark.toString()
+});*/
+
 
 
 
